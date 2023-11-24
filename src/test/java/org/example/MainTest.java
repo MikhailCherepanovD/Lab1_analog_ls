@@ -33,7 +33,8 @@ public class MainTest {
             }
         }
 
-        String str="d1  d2  ";
+        String str="new_dir:\n" +
+                "d1  d2  ";
         assertEquals(str, result);
     }
 
@@ -69,7 +70,7 @@ public class MainTest {
                 FileUtils.deleteDirectory(new_dir);
             } catch (IOException e) {}
         }
-        String str="";
+        String str="new_dir:\n";
         assertEquals(str, result);
     }
     @Test
@@ -98,7 +99,8 @@ public class MainTest {
             } catch (IOException e) {}
         }
 
-        String str=".h1  .h2  d1  d2  ";
+        String str="new_dir:\n" +
+                ".h1  .h2  d1  d2  ";
         assertEquals(str, result);
     }
     @Test
@@ -120,6 +122,40 @@ public class MainTest {
             } catch (IOException e) {}
         }
         String str="Указанный флаг не существует или не риализован.";
+        assertEquals(str, result);
+    }
+@Test
+    public void testGetListFiles6() {
+        Main main = new Main();
+        String cur_dir = System.getProperty("user.dir");
+        File new_dir = new File(cur_dir, "new_dir");
+        String result="";
+        try {
+            FileUtils.deleteDirectory(new_dir);
+        } catch (IOException e) {}
+        if (!new_dir.exists()) {
+            new_dir.mkdir();
+            File s_dir1 = new File(new_dir, "d1");
+            File s_dir2 = new File(new_dir, "d2");
+            s_dir1.mkdir();
+            s_dir2.mkdir();
+            File s_dir3 = new File(s_dir1, "d1_1");
+            File s_dir4 = new File(s_dir1, "d1_2");
+            s_dir3.mkdir();
+            s_dir4.mkdir();
+            File s_dir5= new File(s_dir2, "d2_1");
+            result = main.GetListFiles(new_dir,"-R");
+            System.out.println(result);
+            try {
+                FileUtils.deleteDirectory(new_dir);
+            } catch (IOException e) {
+            }
+        }
+
+        String str="new_dir:\n" +
+                "d1  d2  \n" +
+                "d1:\n" +
+                "d1_1  d1_2 ";
         assertEquals(str, result);
     }
 }
